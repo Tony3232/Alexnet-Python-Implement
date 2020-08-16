@@ -89,12 +89,13 @@ print('Finished Training')
 PATH = './cifar_alexnet.pth'
 torch.save(net.state_dict(), PATH)
 
-"""
+
 net = AlexNet()
 net.load_state_dict(torch.load(PATH))
-"""
+
 
 # test model
+"""
 dataiter = iter(testloader)
 images, labels = dataiter.next()
 
@@ -106,6 +107,7 @@ outputs = net(images)
 _, predicted = torch.max(outputs,1)
 print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
                               for j in range(4)))
+"""
 
 correct = 0
 total = 0
