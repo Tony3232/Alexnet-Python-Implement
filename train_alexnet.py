@@ -95,6 +95,9 @@ net.load_state_dict(torch.load(PATH))
 net.to(device)
 """
 # test model
+
+net.eval()
+
 """
 dataiter = iter(testloader)
 images, labels = dataiter.next()
