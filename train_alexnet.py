@@ -27,12 +27,12 @@ trainset = torchvision.datasets.CIFAR10(root="./data", train=True,
                                         download=True,
                                         transform=transform_train)
 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=8,
                                           shuffle=True, num_workers=0)
 testset = torchvision.datasets.CIFAR10(root="./data", train=False,
                                        download=True,
                                        transform=transform_test)
-testloader = torch.utils.data.DataLoader(testset, batch_size=4,
+testloader = torch.utils.data.DataLoader(testset, batch_size=8,
                                          shuffle=False, num_workers=0)
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
@@ -65,7 +65,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 # train neural network
-num_epoch = 10
+num_epoch = 20
 
 for epoch in range(num_epoch):
     running_loss = 0.0
@@ -89,11 +89,11 @@ print('Finished Training')
 PATH = './cifar_alexnet.pth'
 torch.save(net.state_dict(), PATH)
 
-
+"""
 net = AlexNet()
 net.load_state_dict(torch.load(PATH))
-
-
+net.to(device)
+"""
 # test model
 """
 dataiter = iter(testloader)
@@ -113,7 +113,7 @@ correct = 0
 total = 0
 with torch.no_grad():
     for data in testloader:
-        images, labels = data
+        images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
@@ -125,7 +125,7 @@ class_correct = list(0. for i in range(10))
 class_total = list(0. for i in range(10))
 with torch.no_grad():
     for data in testloader:
-        images, labels = data
+        images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
         _, predicted = torch.max(outputs, 1)
         c = (predicted == labels).squeeze()
